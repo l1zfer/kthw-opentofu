@@ -1,5 +1,6 @@
 resource "tls_private_key" "kthw_key" {
-  algorithm = "ED25519"
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "kthw_key" {

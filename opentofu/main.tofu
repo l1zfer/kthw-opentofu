@@ -12,3 +12,38 @@ resource "local_sensitive_file" "private_key" {
   filename        = "${path.module}/.ssh/kthw_key.pem"
   file_permission = "0600"
 }
+
+resource "aws_default_vpc" "default" {
+  tags = {
+    Name = "kthw_vpc"
+  }
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_default_vpc.default.id
+  tags = {
+    Name = "kthw_sg"
+  }
+  
+  ingress {
+    description = "SSH - open to internet, for lab only"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol  = -1
+    self      = true
+    from_port = 0
+    to_port   = 0
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

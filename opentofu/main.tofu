@@ -74,7 +74,7 @@ resource "aws_instance" "jumpbox" {
     swapoff -a
     sed -i "/ swap / s/^\(.*\)$/#\1/g" /etc/fstab
     apt-get update -y
-    apt-get install -y iptables openssl ca-certificates curl gnupg lsb-release ansible
+    apt-get install -y iptables openssl ca-certificates curl gnupg lsb-release ansible-core
     cat <<EOT | tee /etc/modules-load.d/k8s.conf
     overlay
     br_netfilter

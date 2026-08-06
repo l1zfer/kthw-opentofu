@@ -74,9 +74,8 @@ resource "aws_instance" "jumpbox" {
     swapoff -a
     sed -i "/ swap / s/^\(.*\)$/#\1/g" /etc/fstab
     apt-get update -y
-    apt-get install -y iptables openssl ca-certificates curl gnupg lsb-release git ansible-core
-    git clone https://github.com/l1zfer/kthw-opentofu.git /root/kthw-opentofu
-    ansible-galaxy collection install cloud.terraform
+    apt-get install -y iptables openssl ca-certificates curl gnupg lsb-release git ansible-core jq
+    git clone -b dev https://github.com/l1zfer/kthw-opentofu.git /root/kthw-opentofu
     cat <<EOT | tee /etc/modules-load.d/k8s.conf
     overlay
     br_netfilter

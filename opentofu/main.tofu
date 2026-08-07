@@ -74,7 +74,11 @@ resource "aws_instance" "jumpbox" {
     swapoff -a
     sed -i "/ swap / s/^\(.*\)$/#\1/g" /etc/fstab
     apt-get update -y
-    apt-get install -y iptables openssl ca-certificates curl gnupg lsb-release git ansible-core jq
+    apt-get install -y iptables openssl ca-certificates curl gnupg lsb-release git ansible-core jq software-properties-common
+    wget -O- https://apt.opentofu.org/opentofu.gpg | gpg --dearmor | tee /usr/share/keyrings/opentofu-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/opentofu-archive-keyring.gpg] https://apt.opentofu.org/ stable main" | tee /etc/apt/sources.list.d/opentofu.list
+    apt-get update
+    apt-get install -y tofu
     git clone -b dev https://github.com/l1zfer/kthw-opentofu.git /root/kthw-opentofu
     cat <<EOT | tee /etc/modules-load.d/k8s.conf
     overlay
@@ -89,7 +93,6 @@ resource "aws_instance" "jumpbox" {
     EOT
     sysctl --system
     hostnamectl set-hostname jumpbox
-    curl -fsSL https://get.opentofu.org/install.sh | sh
   EOF
   root_block_device {
     volume_size           = 10

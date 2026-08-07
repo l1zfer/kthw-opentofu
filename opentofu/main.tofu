@@ -89,6 +89,7 @@ resource "aws_instance" "jumpbox" {
     EOT
     sysctl --system
     hostnamectl set-hostname jumpbox
+    curl -fsSL https://get.opentofu.org/install.sh | sh
   EOF
   root_block_device {
     volume_size           = 10

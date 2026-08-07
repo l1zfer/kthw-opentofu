@@ -1,0 +1,16 @@
+---
+- name: Test connection with Kubernetes nodes
+  hosts: k8s_nodes
+  gather_facts: no
+  tasks:
+    - name: Check if host is reachable via SSH and Python
+      ansible.builtin.ping:
+
+    - name: Run hostname command
+      ansible.builtin.shell:
+        cmd: hostname
+      register: hostname_result
+
+    - name: Show hostname
+      ansible.builtin.debug:
+        msg: "Connected to {{ hostname_result.stdout }}"
